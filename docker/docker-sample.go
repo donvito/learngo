@@ -66,7 +66,7 @@ func listNetworks(cli *client.Client) {
 	//List all networks
 	fmt.Print("\n\n\n")
 	fmt.Println("LIST NETWORKS\n-----------------------")
-	fmt.Println("Container Names | Image | Mounts")
+	fmt.Println("Network Name | ID")
 	for _, network := range networks {
 		fmt.Printf("%s | %s\n", network.Name, network.ID)
 	}
