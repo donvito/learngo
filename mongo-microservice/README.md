@@ -46,11 +46,11 @@ $ docker-compose up
 ```
 
 You'll see some similar output below. For now, let's not set the username and password. You can do that later.
-![Screenshot-2018-01-29-17.29.29](/content/images/2018/01/Screenshot-2018-01-29-17.29.29.png)
+![Screenshot-2018-01-29-17.29.29](https://www.melvinvivas.com/content/images/2018/01/Screenshot-2018-01-29-17.29.29.png)
 
 Once MongoDB is up, you can now test it using a MongoDB client. I use [Robomongo](https://robomongo.org/). Since we've configured it to bind to our local host machine, you can configure Robomongo to connect to it. Name does not matter, what is important is the address and port.
 
-![Screenshot-2018-01-29-17.32.07](/content/images/2018/01/Screenshot-2018-01-29-17.32.07.png)
+![Screenshot-2018-01-29-17.32.07](https://www.melvinvivas.com/content/images/2018/01/Screenshot-2018-01-29-17.32.07.png)
 
 Good! So now we have our MongoDB running. Next step is to create the ff:
 * Create a DATABASE named "db"
@@ -240,14 +240,14 @@ $ docker build --build-arg SOURCE_LOCATION=/Users/melvin/Downloads/learngo/mongo
 
 Steps 1 to 6 is the compiling of the microservice's source code into a binary.
 
-![Screenshot-2018-01-29-18.04.10](/content/images/2018/01/Screenshot-2018-01-29-18.04.10.png)
+![Screenshot-2018-01-29-18.04.10](https://www.melvinvivas.com/content/images/2018/01/Screenshot-2018-01-29-18.04.10.png)
 
 Steps 7 to 13 is creating the final docker image with the binary.
 
-![Screenshot-2018-01-29-18.06.38](/content/images/2018/01/Screenshot-2018-01-29-18.06.38.png)
+![Screenshot-2018-01-29-18.06.38](https://www.melvinvivas.com/content/images/2018/01/Screenshot-2018-01-29-18.06.38.png)
 
 To check if the docker image is created, just to a $docker image ls. Notice that the docker image is only 13MB!
-![Screenshot-2018-01-29-18.18.31](/content/images/2018/01/Screenshot-2018-01-29-18.18.31.png)
+![Screenshot-2018-01-29-18.18.31](https://www.melvinvivas.com/content/images/2018/01/Screenshot-2018-01-29-18.18.31.png)
 
 To run the microservice, use this command. Note that I binded to my machine's port 8000 since 9090 is not available anymore.
 
@@ -257,7 +257,7 @@ docker run --name go-mongo-microservice -d --rm -p 8000:9090 --network dockercom
 
 To check if the service is running, just do a $docker ps. 
 
-![Screenshot-2018-01-29-18.09.24](/content/images/2018/01/Screenshot-2018-01-29-18.09.24.png)
+![Screenshot-2018-01-29-18.09.24](https://www.melvinvivas.com/content/images/2018/01/Screenshot-2018-01-29-18.09.24.png)
 
 Since MongoDB does not have data yet, let's insert a sample record. I used [Postman](https://www.getpostman.com/) but curl will also work! You can use this payload.
 
@@ -270,11 +270,11 @@ Since MongoDB does not have data yet, let's insert a sample record. I used [Post
 }
 ```
 
-![Screenshot-2018-01-29-18.14.40](/content/images/2018/01/Screenshot-2018-01-29-18.14.40.png)
+![Screenshot-2018-01-29-18.14.40](https://www.melvinvivas.com/content/images/2018/01/Screenshot-2018-01-29-18.14.40.png)
 
 To check if the microservie is able to retrieve data from MongoDB, access the GET /jobs endpoint. Using your browser will do of course :)
 
-![Screenshot-2018-01-29-18.15.51](/content/images/2018/01/Screenshot-2018-01-29-18.15.51.png)
+![Screenshot-2018-01-29-18.15.51](https://www.melvinvivas.com/content/images/2018/01/Screenshot-2018-01-29-18.15.51.png)
 
 Entire source code is available in my github repo.
 https://github.com/donvito/learngo/tree/master/mongo-microservice
