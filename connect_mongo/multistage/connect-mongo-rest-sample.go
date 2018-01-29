@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	hosts      = "localhost:27017"
+	hosts      = "dockercompose_mongodb_1:27017"
 	database   = "db"
 	username   = ""
 	password   = ""
