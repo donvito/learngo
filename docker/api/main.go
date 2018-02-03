@@ -1,4 +1,3 @@
-i
 package main
 
 import (
