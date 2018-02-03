@@ -4,8 +4,6 @@ matrix:
       go: 1.9.x
       before_script:
         - cd helloworld
-      script:
-	- go build .
 
 notifications:
   email:
