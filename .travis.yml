@@ -5,7 +5,7 @@ matrix:
       before_script:
         - cd helloworld
       script:
-	- go build
+	- go build .
 
 notifications:
   email:
