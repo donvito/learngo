@@ -8,6 +8,7 @@ import (
 
 var wg = sync.WaitGroup{}
 var ch = make(chan int)
+var exitCh = make(chan struct{})
 
 func main() {
 
