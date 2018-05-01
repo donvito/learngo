@@ -26,10 +26,10 @@ https://www.melvinvivas.com/my-first-go-microservice/
 
 In this example, I decoupled the saving of data to MongoDB and created another microservice to handle this. I also added Kafka to serve as the messaging layer so the microservices can work on its own concerns asynchrounously.
 
-###Microservice 1
+### Microservice 1
 The REST microservice which receives data from a /POST http call to it. After receiving the request, it retrieves the data from the http request and saves it to Kafka. After saving, it responds to the caller with the same data sent via /POST
 
-###Microservice 2
+### Microservice 2
 The microservice which subscribes to a topic in Kafka where Microservice 1 saves the data. Once a message is consumed by the microservice, it then saves the data to MongoDB.
 
 Check my blog post about this
