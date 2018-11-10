@@ -1,0 +1,34 @@
+<script src="https://unpkg.com/vue"></script>
+
+<div id="app">
+    <jobs-list
+      v-for="job in jobs"
+      v-bind:job="job"
+      v-bind:key="job.title"
+      v-bind:key="job.salary">
+    </jobs-list>
+</div>
+  
+<script>
+new Vue({
+  el: '#app',
+  data: {
+    jobs : [],
+  },
+  mounted(){
+    fetch("http://localhost:9090/jobs")
+        .then(response => response.json())
+        .then((data) => {
+            this.jobs = data;
+        })
+  }
+});
+
+Vue.component('jobs-list', {
+  props: ['job'],
+  template: '<li>{{ job.title }} {{ job.salary }}</li>'
+})
+
+</script>
+
+
