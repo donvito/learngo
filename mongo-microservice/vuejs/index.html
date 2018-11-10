@@ -15,7 +15,7 @@ new Vue({
   data: {
     jobs : [],
   },
-  mounted(){
+  created(){
     fetch("http://localhost:9090/jobs")
         .then(response => response.json())
         .then((data) => {

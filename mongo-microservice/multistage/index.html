@@ -1,0 +1,29 @@
+<script src="https://unpkg.com/vue"></script>
+
+<div id="app"></div>
+
+<script>
+new Vue({
+  el: '#app',
+  data: {
+    repos : [],
+  },
+  created(){
+    fetch("https://api.github.com/users/donvito/repos")
+        .then(response => response.json())
+        .then((data) => {
+            this.repos = data;
+        })
+  },
+  template: `
+    <div>  
+      <li v-for="repo in repos">
+        {{ repo.id }} {{ repo.name }} 
+      </li>
+    </div>  
+  `
+});
+
+</script>
+
+
