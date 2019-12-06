@@ -8,10 +8,11 @@ import (
 
 func main() {
 	http.HandleFunc("/", rootHandler)
-	err := http.ListenAndServe(":6000", nil)
+	err := http.ListenAndServe(":8000", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
