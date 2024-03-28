@@ -18,3 +18,7 @@ func main() {
 func rootHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Hello World")
 }
+
+func createHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Create")
+}
