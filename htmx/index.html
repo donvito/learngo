@@ -1,0 +1,44 @@
+<html lang="en">
+    <head>
+        <title>HTMX + Go Example</title>
+    </head>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .translated-text {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: blue;
+            background-color: lightgray;
+            padding: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+    <body>
+        <script src="https://unpkg.com/htmx.org@2.0.0"></script>
+        <div class="container">
+            <h2>HTMX + Go</h2>
+            <p>This simple example calls an LLM using Groq Completion API for the translation.</p>
+        <form hx-post="/translate" hx-target="#translated-text" hx-swap="replace">
+            <label for="text-to-translate">Enter text to translate</label><br/>
+            <textarea id="text-to-translate" name="textToTranslate" rows="10" cols="50"></textarea>
+            <br/><br/>
+            <label for="translate-form"></label>
+            <select id="translate-form" name="languageToTranslateTo">
+                <option value="english">English</option>
+                <option value="tagalog">Tagalog</option>
+                <option value="french">French</option>
+                <option value="korean">Korean</option>
+                <option value="japanese">Japanese</option>
+            </select><br/><br/>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="translated-text"></div>
+        </div>
+    </body>
+</html>    
