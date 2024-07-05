@@ -1,12 +1,16 @@
 package main
 
 import (
+	"embed"
 	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
 	"os"
 )
+
+//go:embed index.html translation.html
+var htmlFiles embed.FS
 
 func main() {
 
@@ -23,7 +27,7 @@ func main() {
 }
 
 func handleHome(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("index.html"))
+	tmpl := template.Must(template.ParseFS(htmlFiles, "index.html"))
 
 	err := tmpl.Execute(w, nil)
 	if err != nil {
@@ -46,7 +50,7 @@ func handleTranslate(w http.ResponseWriter, r *http.Request) {
 		TranslatedText:  translatedText,
 	}
 
-	tmpl := template.Must(template.ParseFiles("translation.html"))
+	tmpl := template.Must(template.ParseFS(htmlFiles, "translation.html"))
 	err := tmpl.Execute(w, t)
 	if err != nil {
 		return
