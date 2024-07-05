@@ -1,7 +1,7 @@
 # HTMX and Go
 This is a simple example of how to use HTMX and Go. 
 
-![Go + HTMX example](screenshot.png)
+![Go + HTMX example](screenshot-tagalog.png)
 
 Although translation might not be the best example to use with LLMs since
 sometimes it has translation errors, this example is just to demonstrate how to create a simple
