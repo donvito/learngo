@@ -1,17 +1,21 @@
 package main
 
-import "fmt"
-
-func clientCode(t Target) {
-	fmt.Println(t.Request())
-}
+import (
+	"log"
+	"os"
+)
 
 func main() {
-	fmt.Println("Client: The Adaptee has a weird interface:")
-	adaptee := Adaptee{}
-	fmt.Printf("Adaptee: %s\n", adaptee.SpecificRequest())
+	// Adaptee: stdlib logger with default settings
+	std := log.New(os.Stdout, "", log.LstdFlags|log.Lshortfile)
+	adaptee := NewStdLoggerAdaptee(std)
 
-	fmt.Println("\nClient: But with an adapter, I can work with it:")
-	adapter := NewAdapter(adaptee)
-	clientCode(adapter)
+	// Adapter to the application's expected Logger interface
+	logger := NewStdLoggerAdapter(adaptee)
+
+	// Application code uses Logger interface only
+	logger.Info("starting server", map[string]any{"addr": ":8080", "mode": "dev"})
+	logger.Debug("cache primed", map[string]any{"entries": 128})
+	logger.Warn("rate limit approaching", map[string]any{"remaining": 3})
+	logger.Error("database connection failed", map[string]any{"retry_in": "2s", "attempt": 1})
 }

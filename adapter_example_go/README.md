@@ -1,15 +1,20 @@
-# Adapter Pattern (Go) Example
+# Adapter Pattern (Go) — Realistic Logger Example
 
-This example shows how an `Adapter` makes an incompatible `Adaptee` usable via the `Target` interface expected by the client.
+Adapt the standard library `log.Logger` (adaptee) to an application-defined structured `Logger` interface (target). This mirrors real-world cases where your app expects an interface but you need to plug in a third-party/stdlib implementation with a different API.
 
 ## Files
-- `target.go`: Defines the `Target` interface.
-- `adaptee.go`: Provides an incompatible API via `SpecificRequest()`.
-- `adapter.go`: Implements `Target` and translates calls to the `Adaptee`.
-- `main.go`: Demonstrates the client working with the `Adapter`.
+- `logger.go`: The `Logger` interface used by application code.
+- `stdlog_adaptee.go`: Wraps `log.Logger` and exposes an incompatible method `PrintLine`.
+- `stdlog_adapter.go`: Implements `Logger` by delegating to the adaptee and handling level/fields.
+- `main.go`: Demonstrates usage.
 
 ## Run
 ```bash
-# From repo root
 go run /workspace/adapter_example_go
+```
+
+## Output (example)
+```
+2025/01/01 12:00:00 stdlog_adaptee.go:22: [INFO] starting server | addr=:8080 mode=dev 
+...
 ```
