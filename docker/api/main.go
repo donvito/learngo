@@ -8,7 +8,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/image"
+	"github.com/docker/docker/api/types/network"
+	"github.com/docker/docker/api/types/swarm"
 	"github.com/docker/docker/client"
 
 	"github.com/gorilla/mux"
@@ -33,7 +36,7 @@ func Images(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//List all images available locally
-	images, err := cli.ImageList(context.Background(), types.ImageListOptions{})
+	images, err := cli.ImageList(context.Background(), image.ListOptions{})
 	if err != nil {
 		panic(err)
 	}
@@ -54,7 +57,7 @@ func Containers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//Retrieve a list of containers
-	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
+	containers, err := cli.ContainerList(context.Background(), container.ListOptions{})
 	if err != nil {
 		panic(err)
 	}
@@ -77,7 +80,7 @@ func Networks(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	networks, err := cli.NetworkList(context.Background(), types.NetworkListOptions{})
+	networks, err := cli.NetworkList(context.Background(), network.ListOptions{})
 	if err != nil {
 		panic(err)
 	}
@@ -100,7 +103,7 @@ func SwarmNodes(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	swarmNodes, err := cli.NodeList(context.Background(), types.NodeListOptions{})
+	swarmNodes, err := cli.NodeList(context.Background(), swarm.NodeListOptions{})
 	if err != nil {
 		panic(err)
 	}
