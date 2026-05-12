@@ -7,3 +7,6 @@ Hoping these referene code can be useful to you.
 ### [learngo/ai/groq-ai](https://github.com/donvito/learngo/tree/master/ai/go-groq)
 This example shows how translate text using the Groq's Fast Inference API.
 Check out the full tutorial in my [blog post](https://blog.donvitocodes.com/using-go-to-translate-text-using-the-groq-api-fast-inference).
+
+### [learngo/ai/go-openai](https://github.com/donvito/learngo/tree/master/ai/go-openai)
+This example shows how to call the OpenAI Chat Completions API using Go.
