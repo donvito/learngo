@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 
@@ -30,7 +30,7 @@ func main() {
 func jobsPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	//Retrieve body from http request
-	b, err := ioutil.ReadAll(r.Body)
+	b, err := io.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err != nil {
 		panic(err)

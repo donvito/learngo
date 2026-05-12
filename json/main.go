@@ -11,13 +11,12 @@ func main() {
 
 	var f interface{}
 	err := json.Unmarshal(b, &f)
+	if err != nil {
+		panic(err)
+	}
 
 	fmt.Printf("%v", f)
 
-	if err != nil {
-		panic(err)
-
-	}
 	m := f.(map[string]interface{})
 
 	fmt.Printf("\n%v", m)
@@ -25,21 +24,5 @@ func main() {
 	s := m["Sample"].([]interface{})
 
 	fmt.Printf("--\ns[0]%v", s[0])
-
-	// for k, v := range m {
-	// 	switch vv := v.(type) {
-	// 	case string:
-	// 		fmt.Println(k, "is string", vv)
-	// 	case float64:
-	// 		fmt.Println(k, "is float64", vv)
-	// 	case []interface{}:
-	// 		fmt.Println(k, "is an array:")
-	// 		for i, u := range vv {
-	// 			fmt.Println(i, u)
-	// 		}
-	// 	default:
-	// 		fmt.Println(k, "is of a type I don't know how to handle")
-	// 	}
-	// }
 
 }
