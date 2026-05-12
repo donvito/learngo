@@ -3,14 +3,14 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"time"
-	"io/ioutil"
 
 	"github.com/gorilla/mux"
-	"gopkg.in/mgo.v2/bson"
 	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 const (
@@ -29,13 +29,13 @@ type Job struct {
 }
 
 type MongoStore struct {
-    session *mgo.Session
+	session *mgo.Session
 }
 
 var mongoStore = MongoStore{}
 
 func main() {
-	
+
 	//Create MongoDB session
 	session := initialiseMongo()
 	mongoStore.session = session
@@ -48,7 +48,7 @@ func main() {
 
 }
 
-func initialiseMongo() (session *mgo.Session){
+func initialiseMongo() (session *mgo.Session) {
 
 	info := &mgo.DialInfo{
 		Addrs:    []string{hosts},
@@ -76,21 +76,21 @@ func jobsGetHandler(w http.ResponseWriter, r *http.Request) {
 	jsonString, err := json.Marshal(results)
 	if err != nil {
 		panic(err)
-	}	
+	}
 	fmt.Fprint(w, string(jsonString))
 
 }
 
 func jobsPostHandler(w http.ResponseWriter, r *http.Request) {
-	
+
 	col := mongoStore.session.DB(database).C(collection)
 
 	//Retrieve body from http request
-	b, err := ioutil.ReadAll(r.Body)
+	b, err := io.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err != nil {
 		panic(err)
-	}	
+	}
 
 	//Save data into Job struct
 	var _job Job
@@ -111,12 +111,12 @@ func jobsPostHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
-	}	
+	}
 
 	//Set content-type http header
 	w.Header().Set("content-type", "application/json")
 
 	//Send back data as response
 	w.Write(jsonString)
-		
+
 }

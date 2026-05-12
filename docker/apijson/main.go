@@ -1,19 +1,16 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"log"
+	"net/http"
+	"strings"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
-	"golang.org/x/net/context"
-
-	//"html"
-	"log"
-	"net/http"
 
 	"github.com/gorilla/mux"
-
-	"strings"
 )
 
 func main() {
@@ -29,7 +26,7 @@ func main() {
 
 func Images(w http.ResponseWriter, r *http.Request) {
 
-	cli, err := client.NewEnvClient()
+	cli, err := newDockerClient()
 	if err != nil {
 		panic(err)
 	}
@@ -40,14 +37,12 @@ func Images(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	fmt.Printf("%v", images)
-
 	fmt.Fprint(w, images)
 }
 
 func Containers(w http.ResponseWriter, r *http.Request) {
 
-	cli, err := client.NewEnvClient()
+	cli, err := newDockerClient()
 	if err != nil {
 		panic(err)
 	}
@@ -71,7 +66,7 @@ func Containers(w http.ResponseWriter, r *http.Request) {
 
 func Networks(w http.ResponseWriter, r *http.Request) {
 
-	cli, err := client.NewEnvClient()
+	cli, err := newDockerClient()
 	if err != nil {
 		panic(err)
 	}
@@ -94,7 +89,7 @@ func Networks(w http.ResponseWriter, r *http.Request) {
 
 func SwarmNodes(w http.ResponseWriter, r *http.Request) {
 
-	cli, err := client.NewEnvClient()
+	cli, err := newDockerClient()
 	if err != nil {
 		panic(err)
 	}
@@ -113,4 +108,8 @@ func SwarmNodes(w http.ResponseWriter, r *http.Request) {
 	htmlOutput += "</html>"
 	fmt.Fprint(w, htmlOutput)
 
+}
+
+func newDockerClient() (*client.Client, error) {
+	return client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 }

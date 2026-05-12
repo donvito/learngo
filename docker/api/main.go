@@ -1,20 +1,17 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"log"
+	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
-	"golang.org/x/net/context"
-
-    //"html"
-    "log"
-    "net/http"
 
 	"github.com/gorilla/mux"
-	
-	"strconv"
-	"strings"
 )
 
 func main() {
@@ -24,17 +21,17 @@ func main() {
 	router.HandleFunc("/containers", Containers)
 	router.HandleFunc("/networks", Networks)
 	router.HandleFunc("/swarm-nodes", SwarmNodes)
-	log.Fatal(http.ListenAndServe(":9090", router))   
-	
+	log.Fatal(http.ListenAndServe(":9090", router))
+
 }
 
 func Images(w http.ResponseWriter, r *http.Request) {
 
-	cli, err := client.NewEnvClient()
+	cli, err := newDockerClient()
 	if err != nil {
 		panic(err)
 	}
-	
+
 	//List all images available locally
 	images, err := cli.ImageList(context.Background(), types.ImageListOptions{})
 	if err != nil {
@@ -49,10 +46,9 @@ func Images(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, htmlOutput)
 }
 
-
 func Containers(w http.ResponseWriter, r *http.Request) {
 
-	cli, err := client.NewEnvClient()
+	cli, err := newDockerClient()
 	if err != nil {
 		panic(err)
 	}
@@ -65,7 +61,7 @@ func Containers(w http.ResponseWriter, r *http.Request) {
 
 	//Iterate through all containers and display each container's properties
 	//fmt.Println("Image ID | Repo Tags | Size")
-	htmlOutput := "<html>" 
+	htmlOutput := "<html>"
 	for _, container := range containers {
 		htmlOutput += strings.Join(container.Names, ",") + " | " + container.Image + "<br/>"
 	}
@@ -76,7 +72,7 @@ func Containers(w http.ResponseWriter, r *http.Request) {
 
 func Networks(w http.ResponseWriter, r *http.Request) {
 
-	cli, err := client.NewEnvClient()
+	cli, err := newDockerClient()
 	if err != nil {
 		panic(err)
 	}
@@ -87,7 +83,7 @@ func Networks(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//List all networks
-	htmlOutput := "<html>" 
+	htmlOutput := "<html>"
 	//fmt.Println("Network Name | ID")
 	for _, network := range networks {
 		htmlOutput += network.Name + " | " + network.ID + "<br/>"
@@ -99,7 +95,7 @@ func Networks(w http.ResponseWriter, r *http.Request) {
 
 func SwarmNodes(w http.ResponseWriter, r *http.Request) {
 
-	cli, err := client.NewEnvClient()
+	cli, err := newDockerClient()
 	if err != nil {
 		panic(err)
 	}
@@ -110,7 +106,7 @@ func SwarmNodes(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//List all nodes - works only in Swarm Mode
-	htmlOutput := "<html>" 
+	htmlOutput := "<html>"
 	//fmt.Println("Name | Role | Leader | Status")
 	for _, swarmNode := range swarmNodes {
 		htmlOutput += swarmNode.Description.Hostname
@@ -118,4 +114,8 @@ func SwarmNodes(w http.ResponseWriter, r *http.Request) {
 	htmlOutput += "</html>"
 	fmt.Fprint(w, htmlOutput)
 
+}
+
+func newDockerClient() (*client.Client, error) {
+	return client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 }

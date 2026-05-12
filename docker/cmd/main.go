@@ -18,12 +18,6 @@ func main() {
 	}
 	cli.NegotiateAPIVersion(ctx)
 
-	// reader, err := cli.ImagePull(ctx, "go-multi-stage", types.ImagePullOptions{})
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// io.Copy(os.Stdout, reader)
-
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
 		Image: "go-multi-stage",
 	}, nil, nil, "")
