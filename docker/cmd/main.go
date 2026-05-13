@@ -4,7 +4,6 @@ import (
 	"context"
 	"os"
 
-	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/stdcopy"
@@ -18,20 +17,14 @@ func main() {
 	}
 	cli.NegotiateAPIVersion(ctx)
 
-	// reader, err := cli.ImagePull(ctx, "go-multi-stage", types.ImagePullOptions{})
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// io.Copy(os.Stdout, reader)
-
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
 		Image: "go-multi-stage",
-	}, nil, nil, "")
+	}, nil, nil, nil, "")
 	if err != nil {
 		panic(err)
 	}
 
-	if err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
+	if err := cli.ContainerStart(ctx, resp.ID, container.StartOptions{}); err != nil {
 		panic(err)
 	}
 
@@ -44,7 +37,7 @@ func main() {
 	case <-statusCh:
 	}
 
-	out, err := cli.ContainerLogs(ctx, resp.ID, types.ContainerLogsOptions{ShowStdout: true})
+	out, err := cli.ContainerLogs(ctx, resp.ID, container.LogsOptions{ShowStdout: true})
 	if err != nil {
 		panic(err)
 	}

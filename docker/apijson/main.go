@@ -1,19 +1,19 @@
 package main
 
 import (
+	"context"
 	"fmt"
-
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/client"
-	"golang.org/x/net/context"
-
-	//"html"
 	"log"
 	"net/http"
+	"strings"
+
+	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/image"
+	"github.com/docker/docker/api/types/network"
+	"github.com/docker/docker/api/types/swarm"
+	"github.com/docker/docker/client"
 
 	"github.com/gorilla/mux"
-
-	"strings"
 )
 
 func main() {
@@ -29,31 +29,29 @@ func main() {
 
 func Images(w http.ResponseWriter, r *http.Request) {
 
-	cli, err := client.NewEnvClient()
+	cli, err := newDockerClient()
 	if err != nil {
 		panic(err)
 	}
 
 	//List all images available locally
-	images, err := cli.ImageList(context.Background(), types.ImageListOptions{})
+	images, err := cli.ImageList(context.Background(), image.ListOptions{})
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Printf("%v", images)
 
 	fmt.Fprint(w, images)
 }
 
 func Containers(w http.ResponseWriter, r *http.Request) {
 
-	cli, err := client.NewEnvClient()
+	cli, err := newDockerClient()
 	if err != nil {
 		panic(err)
 	}
 
 	//Retrieve a list of containers
-	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
+	containers, err := cli.ContainerList(context.Background(), container.ListOptions{})
 	if err != nil {
 		panic(err)
 	}
@@ -71,12 +69,12 @@ func Containers(w http.ResponseWriter, r *http.Request) {
 
 func Networks(w http.ResponseWriter, r *http.Request) {
 
-	cli, err := client.NewEnvClient()
+	cli, err := newDockerClient()
 	if err != nil {
 		panic(err)
 	}
 
-	networks, err := cli.NetworkList(context.Background(), types.NetworkListOptions{})
+	networks, err := cli.NetworkList(context.Background(), network.ListOptions{})
 	if err != nil {
 		panic(err)
 	}
@@ -94,12 +92,12 @@ func Networks(w http.ResponseWriter, r *http.Request) {
 
 func SwarmNodes(w http.ResponseWriter, r *http.Request) {
 
-	cli, err := client.NewEnvClient()
+	cli, err := newDockerClient()
 	if err != nil {
 		panic(err)
 	}
 
-	swarmNodes, err := cli.NodeList(context.Background(), types.NodeListOptions{})
+	swarmNodes, err := cli.NodeList(context.Background(), swarm.NodeListOptions{})
 	if err != nil {
 		panic(err)
 	}
@@ -113,4 +111,8 @@ func SwarmNodes(w http.ResponseWriter, r *http.Request) {
 	htmlOutput += "</html>"
 	fmt.Fprint(w, htmlOutput)
 
+}
+
+func newDockerClient() (*client.Client, error) {
+	return client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 }

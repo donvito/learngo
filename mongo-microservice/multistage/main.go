@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"time"
@@ -74,7 +74,7 @@ func jobsGetHandler(w http.ResponseWriter, r *http.Request) {
 	col := mongoStore.session.DB(database).C(collection)
 
 	results := []Job{}
-	col.Find(bson.M{"title": bson.RegEx{"", ""}}).All(&results)
+	col.Find(bson.M{"title": bson.RegEx{Pattern: "", Options: ""}}).All(&results)
 	jsonString, err := json.Marshal(results)
 	if err != nil {
 		panic(err)
@@ -88,7 +88,7 @@ func jobsPostHandler(w http.ResponseWriter, r *http.Request) {
 	col := mongoStore.session.DB(database).C(collection)
 
 	//Retrieve body from http request
-	b, err := ioutil.ReadAll(r.Body)
+	b, err := io.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err != nil {
 		panic(err)
